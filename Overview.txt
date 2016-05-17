@@ -1,0 +1,21 @@
+* 01-JavaThread
+	mvn archetype:generate -DgroupId=com.threadBasic -DartifactId=01-JavaThread 
+		-DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+		
+		
+		
+* Race condition 			
+		
+* Liveness Problems
+	- Deadlock: Thread 1 waits for a resource that thread 2 is holding
+		exclusively and thread 2 is waiting for a resource that thread 1 is
+		holding exclusively. Neither thread can make progress.
+	- Livelock: Thread x keeps retrying an operation that will always
+		fail. It cannot make progress for this reason.
+	- Starvation: Thread x is continually denied (by the scheduler)
+		access to a needed resource in order to make progress. Perhaps
+		the scheduler executes higher-priority threads before
+		lower-priority threads and there is always a higher-priority thread
+		available for execution. Starvation is also commonly referred to as
+		indefinite postponement.
+	
