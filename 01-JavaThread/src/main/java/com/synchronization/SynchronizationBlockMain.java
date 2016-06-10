@@ -25,9 +25,10 @@ public class SynchronizationBlockMain {
 	public static void main(String[] args) {
 		
 		ExecutorService executor = Executors.newFixedThreadPool(20);//creating a pool of 20 threads  
-		for (int i = 0; i < 10; i++) {  
-			executor.execute(new ThreadUtil(new WriteDBTaskBlock(),"WriteThread:"+i,5));
-			executor.execute(new ThreadUtil(new ReadDBTaskBlock(),"ReadThread:"+i,5));
+		for (int i = 0; i < 1; i++) {  
+			WriteDBTaskBlock test=new WriteDBTaskBlock();
+			executor.execute(new ThreadUtil(test,"WriteThread:"+i,5));
+			executor.execute(new ThreadUtil(test,"ReadThread:"+i,5));
 		}             
 	}
 }
