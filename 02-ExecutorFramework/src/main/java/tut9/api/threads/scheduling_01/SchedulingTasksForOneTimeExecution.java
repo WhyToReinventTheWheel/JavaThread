@@ -1,4 +1,4 @@
-package tut9.api.threads.scheduling;
+package tut9.api.threads.scheduling_01;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

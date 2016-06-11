@@ -3,7 +3,7 @@ package tut8.api.threads.joining;
 import tuts.common.ValueReturningTaskC;
 
 
-public class ReturningValuesThirdWay {
+public class T2_ReturningValuesThirdWay {
 
 	public static void main(String[] args) throws InterruptedException {
 		String currentThreadName = Thread.currentThread().getName();

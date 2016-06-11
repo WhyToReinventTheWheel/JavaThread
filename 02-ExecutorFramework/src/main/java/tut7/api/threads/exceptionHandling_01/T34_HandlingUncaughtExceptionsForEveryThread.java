@@ -1,10 +1,10 @@
-package tut7.api.threads.exceptionHandling;
+package tut7.api.threads.exceptionHandling_01;
 
 import tuts.common.ExceptionLeakingTask;
 import tuts.common.ThreadExceptionHandler;
 
 
-public class HandlingUncaughtExceptionsForEveryThread {
+public class T34_HandlingUncaughtExceptionsForEveryThread {
 
 	public static void main(String[] args) {
 		String currentThreadName = Thread.currentThread().getName();

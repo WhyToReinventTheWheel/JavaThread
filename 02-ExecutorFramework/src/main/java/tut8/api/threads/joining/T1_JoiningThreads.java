@@ -3,7 +3,7 @@ package tut8.api.threads.joining;
 import tuts.common.LoopTaskD;
 
 
-public class JoiningThreads {
+public class T1_JoiningThreads {
 
 	public static void main(String[] args) throws InterruptedException {
 		String currentThreadName = Thread.currentThread().getName();
