@@ -1,3 +1,0 @@
-# JavaThread
-Thread Basics 
-Test
