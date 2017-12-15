@@ -3,7 +3,7 @@
 	* http://javarevisited.blogspot.sg/2011/04/difference-between-concurrenthashmap.html
 	* http://javarevisited.blogspot.sg/2013/02/concurrenthashmap-in-java-example-tutorial-working.html
 	* ConcurrentModificationException 
-	 Collections.synchronizedMap()
+	* Collections.synchronizedMap()
 	Synchronized collections
 		* low performance, scalability
 		* ConcurrentModificationException
