@@ -1,8 +1,131 @@
+# ForkJoin 
+	public static void main(String[] args) {
+		ForkJoinPool forkJoinPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
+		SimpleRecursiveAction simpleRecursiveAction = new SimpleRecursiveAction(100);
+		System.out.println(forkJoinPool.invoke(simpleRecursiveAction));
+	}
+
+	private static class SimpleRecursiveAction extends RecursiveTask<Integer> {
+		private int simulatedWork;
+
+		public SimpleRecursiveAction(int simulatedWork) {
+			this.simulatedWork = simulatedWork;
+		}
+
+		@Override
+		protected Integer compute() {
+			if (simulatedWork > 10) {
+				System.out.println("Parallel execution and split the tasks..." + simulatedWork);
+				int index = simulatedWork / 2;
+				SimpleRecursiveAction simpleRecursiveAction1 = new SimpleRecursiveAction(index);
+				SimpleRecursiveAction simpleRecursiveAction2 = new SimpleRecursiveAction(index + (simulatedWork % 2));
+
+				simpleRecursiveAction1.fork();
+				simpleRecursiveAction2.fork();
+
+				int solution = 0;
+				solution = solution + simpleRecursiveAction1.join();
+				solution = solution + simpleRecursiveAction2.join();
+				return solution;
+			} else {
+				System.out.println("No need for parallel execution, sequential is OK for this task...");
+				return 2 * simulatedWork;
+			}
+		}
+	}
+
+# Thread Pool
+	ExecutorService executorService = Executors.newFixedThreadPool(5);
+	ExecutorService executorService = Executors.newCachedThreadPool();
+	ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+	* executorService.execute(Runnable command)
+	
+	* <T> Future<T> submit(Callable<T> task)
+	* Future<?> submit(Runnable task)
+
+# Callable
+	
+	ExecutorService executorService = Executors.newFixedThreadPool(2);
+	Future<String> future = executorService.submit(new Processor());
+	System.out.println(future.get());  //This will hold execution unit task done 
+	executorService.shutdown();
+	
+	private static class Processor implements Callable<String> {
+		@Override
+		public String call() throws Exception {
+			return "HelloCallable";
+		}
+	}
+	
+# How to control thread related properties in Executors framework
+	ExecutorService execService = Executors.newCachedThreadPool(new DaemonThreadsFactory());
+	execService.execute(new Task("Task1"));
+	execService.execute(new Task("Task2"));
+	execService.shutdown();
+	
+	//We need to use thread factory here 
+	private class DaemonThreadsFactory extends NamedThreadsFactory {
+		private static int count = 0;
+		public Thread newThread(Runnable r) {
+			Thread t = super.newThread(r);
+			t.setDaemon(true);
+			return t;
+		}
+	}
+	
+
+	
+	
+# CompletionService 
+	ExecutorService execService = Executors.newCachedThreadPool();
+	CompletionService<TaskResult<Integer, Integer>> 
+				tasks = new ExecutorCompletionService<>(execService);
+	tasks.submit(new callableTaskEx(2));
+	tasks.submit(new RunnableTaskEx(), new TaskResult<Integer, Integer>(100, 999));
+	execService.shutdown();
+	for (int i = 0; i < 2; i++) {
+		try {
+			Future<TaskResult<Integer, Integer>> result=tasks.take();
+			System.out.println(result.get());
+		} catch (InterruptedException | ExecutionException e) {
+	
+		}
+	}
+	
+# DaemonThreads
+	* Main Thread also user thread
+	* Daemon Thread untill any user thread live
+	* Automatically Kill when all user thread die 
+	
+	Thread t1 = new Thread(new Task(), "Thread-1");
+	t1.setDaemon(true);
+	t1.start();
+	
 # NamingThread
 	String currentThreadName = Thread.currentThread().getName();
 	new Thread(new Task(), "MyThread-1").start();
 	Thread t2 = new Thread(new Task());
 	t2.setName("MyThread-2");
+	
+# Join 
+	Thread t1 = new Thread(new Task("MyThread-1",500));
+	Thread t2 = new Thread(new Task("MyThread-2",1000));
+	t1.start();
+	t2.start();
+	
+	t1.join();
+	System.out.println("t1 thread ends here...");
+	t2.join();
+	System.out.println("t2 thread ends here...");
+	System.out.println("Main thread ends here...");
+	
+# Yield
+	Whenever a thread calls java.lang.Thread.yield method, 
+	it gives hint to the thread scheduler that it is ready to pause its execution. 
+	Thread scheduler is free to ignore this hint.
+	
+	Thread.yield();
 
 # Synchronized
 	public static synchronized void increment(); //Static 
@@ -73,6 +196,7 @@
 # CountDownLatch
 	CountDownLatch latch = new CountDownLatch(5); 
 	
+	// Main Thread
 	try {
 		latch.await();    // Waiting here to complete all task
 	} catch (InterruptedException e) {
@@ -83,4 +207,41 @@
 	public void run() {
 		doWork();
 		latch.countDown();   // Making down
+	}
+	
+	
+	
+# Collection 
+
+	BlockingQueue<String> queue = new ArrayBlockingQueue<String>(10);
+	BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
+	BlockingQueue<String> queue = new LinkedBlockingQueue<String>(10);  // Can we unbounded, use seprate lock for head and tail 
+	
+	* It uses the same ordering rules as the java.util.PriorityQueue class -> have 
+	  to implement the COmparable interface The comparable interface will determine 
+	  what will the order in the queue
+	  The priority can be the same compare() == 0 case
+		
+	BlockingQueue<String> queue = new PriorityBlockingQueue<>(10);
+	BlockingQueue<String> queue = new PriorityBlockingQueue<>();
+	
+	//Producer
+	public void run() {
+		try {
+			while (true) {
+				blockingQueue.put("Data:" + count);
+			}
+		} catch (InterruptedException e) {
+		
+		}
+	}
+	
+	//Consumer
+	public void run(){
+		try {
+			while (true) {
+				System.out.println("Taken Data:-- "+blockingQueue.take());
+			}
+		} catch (InterruptedException e) {
+		}
 	}
