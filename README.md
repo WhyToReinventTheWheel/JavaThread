@@ -239,6 +239,39 @@
 		doWork();
 		latch.countDown();   // Making down
 	}
+# Java volatile Visibility Guarantee
+	http://tutorials.jenkov.com/java-concurrency/volatile.html
+	The Java volatile keyword guarantees visibility of changes to variables across threads.
+	
+	In a multithreaded application where the threads operate on non-volatile variables, 
+	each thread may copy variables from main memory into a CPU cache while working on them, 
+	for performance reasons. If your computer contains more than one CPU, each thread may 
+	run on a different CPU. That means, that each thread may copy the variables into the 
+	CPU cache of different CPUs
+	
+	Declaring the counter variable volatile all writes to the counter variable will be written
+	back to main memory immediately. Also, all reads of the counter variable will be read 
+	directly from main memory. Here is how the volatile declaration of the counter variable looks:
+	
+	public class SharedObject {
+		public volatile int counter = 0;
+	}
+
+# AtomicInteger
+	The AtomicInteger class provides you with a int variable which can be read and written atomically.
+	AtomicInteger atomicInteger = new AtomicInteger();
+	AtomicInteger atomicInteger = new AtomicInteger(123);
+	int theValue = atomicInteger.get();
+	atomicInteger.set(234);
+	int expectedValue = 123;
+	int newValue      = 234;
+	atomicInteger.compareAndSet(expectedValue, newValue);
+	atomicInteger.getAndAdd(10);
+	atomicInteger.getAndAdd(10);
+	atomicInteger.getAndIncrement();
+	atomicInteger.incrementAndGet();
+	atomicInteger.decrementAndGet();
+	atomicInteger.getAndDecrement();
 	
 # Collection 
 	BlockingQueue<String> queue = new ArrayBlockingQueue<String>(10);
