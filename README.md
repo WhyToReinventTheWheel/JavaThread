@@ -1,3 +1,19 @@
+# Synchronized collections vs Concurrent collections
+	* http://javarevisited.blogspot.com/2016/05/what-is-difference-between-synchronized.html
+	* http://javarevisited.blogspot.sg/2011/04/difference-between-concurrenthashmap.html
+	* http://javarevisited.blogspot.sg/2013/02/concurrenthashmap-in-java-example-tutorial-working.html
+	* ConcurrentModificationException 
+	 Collections.synchronizedMap()
+	Synchronized collections
+		* low performance, scalability
+		* ConcurrentModificationException
+		* Synchronized collections like synchronized HashMap, Hashtable, HashSet, Vector, 
+			and synchronized ArrayList are much slower than their concurrent counterparts
+	Concurrent collections
+		* ConcurrentHashMap, CopyOnWriteArrayList, and CopyOnWriteHashSet
+		* Unlike Hashtable and Synchronized Map, it never locks whole Map, 
+			instead, it divides the map into segments and locking is done on those.
+
 # ForkJoin 
 	public static void main(String[] args) {
 		ForkJoinPool forkJoinPool = new ForkJoinPool(Runtime.getRuntime().availableProcessors());
@@ -152,6 +168,21 @@
 		lock.unlock();
 	}
 	
+# ReadWriteLock  
+	ReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+	// Read critical section
+	readWriteLock.readLock().lock();
+		// multiple readers can enter this section
+		// if not locked for writing, and not writers waiting
+		// to lock for writing.
+	readWriteLock.readLock().unlock();
+
+	// Write critical section
+	readWriteLock.writeLock().lock();
+		// only one writer can enter this section,
+		// and only if no threads are currently reading.
+	readWriteLock.writeLock().unlock();
+	
 # Semaphore
 	semaphore maintains a set of permits
 	* public Semaphore(int permits,boolean fair)
@@ -209,10 +240,7 @@
 		latch.countDown();   // Making down
 	}
 	
-	
-	
 # Collection 
-
 	BlockingQueue<String> queue = new ArrayBlockingQueue<String>(10);
 	BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
 	BlockingQueue<String> queue = new LinkedBlockingQueue<String>(10);  // Can we unbounded, use seprate lock for head and tail 
