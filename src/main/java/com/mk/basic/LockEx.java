@@ -9,9 +9,12 @@ public class LockEx {
 	private static Lock lock = new ReentrantLock();
 	
 	public static void increment(){
-		lock.lock();
-		counter++;
-		lock.unlock();
+		try {
+			lock.lock();
+			counter++;
+		}finally {
+			lock.unlock();
+		}
 	}
 	
 	public static void firstThread(){
