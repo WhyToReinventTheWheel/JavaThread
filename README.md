@@ -42,6 +42,20 @@
 	} finally {
 		semaphore.release();
 	}
+
+# WaitNotify
+	public void produce() throws InterruptedException {
+		synchronized (this) {
+			wait(30000);
+		}
+	}
+	public void consume() throws InterruptedException {
+		synchronized (this) {
+			//notify();
+			notifyAll();
+		}
+	}
+	
 	
 # Condition
 	private Lock lock = new ReentrantLock();
