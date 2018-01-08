@@ -102,7 +102,7 @@
 	execService.shutdown();
 	for (int i = 0; i < 2; i++) {
 		try {
-			Future<TaskResult<Integer, Integer>> result=tasks.take();
+			Future<TaskResult<Integer, Integer>> result=tasks.take();  //Hold Untill task complete and return 1st complete task
 			System.out.println(result.get());
 		} catch (InterruptedException | ExecutionException e) {
 	
