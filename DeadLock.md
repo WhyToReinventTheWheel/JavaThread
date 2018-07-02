@@ -1,15 +1,44 @@
 # DeadLock
+```
+public class DeadLock {
+    public static Object Lock1 = new Object();
+    public static Object Lock2 = new Object();
 
+    public static void main(String[] args) throws Exception {
+        Thread.sleep(5000);
+        ThreadDemo1 T1 = new ThreadDemo1();
+        ThreadDemo2 T2 = new ThreadDemo2();
+        T1.start();
+        T2.start();
+    }
 
+    private static class ThreadDemo1 extends Thread {
+        public void run() {
+            synchronized (Lock1) {
+                System.out.println("Thread 1: Holding lock 1...");
+                System.out.println("Thread 1: Waiting for lock 2...");
+                synchronized (Lock2) {
+                    System.out.println("Thread 1: Holding lock 1 & 2...");
+                }
+            }
+        }
+    }
 
+    private static class ThreadDemo2 extends Thread {
+        public void run() {
+            synchronized (Lock2) {
+                System.out.println("Thread 2: Holding lock 2...");
+                System.out.println("Thread 2: Waiting for lock 1...");
+                synchronized (Lock1) {
+                    System.out.println("Thread 2: Holding lock 1 & 2...");
+                }
+            }
+        }
+    }
+}
+```
 
-
-
-
-
-
-
-# Thread DumpExample
+# Dead Lock Thread Dump
 ```
 2018-07-01 19:56:03
 Full thread dump Java HotSpot(TM) 64-Bit Server VM (25.171-b11 mixed mode):
